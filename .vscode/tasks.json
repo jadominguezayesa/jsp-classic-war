@@ -1,0 +1,93 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "build-war",
+            "command": "mvn",
+            "args": ["package"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "deploy-war",
+            "command": "cmd",
+            "args": ["/c", "${workspaceFolder}\\.vscode\\deploy-war.bat"],
+            "group": "build",
+            "dependsOn": "build-war",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+
+        {
+            "type": "shell",
+            "label": "start-tomcat-jpda",
+            "command": "cmd",
+            "args": ["/c", "${workspaceFolder}\\.vscode\\start-tomcat.bat"],
+            "group": "build",
+            "isBackground": true,
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "dedicated"
+            },
+            "problemMatcher": {
+                "owner": "tomcat",
+                "pattern": {
+                    "regexp": ".*"
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".*Starting.*",
+                    "endsPattern": ".*Server startup in.*milliseconds.*"
+                }
+            }
+        },
+        {
+            "type": "shell",
+            "label": "stop-tomcat",
+            "command": "cmd",
+            "args": ["/c", "${workspaceFolder}\\.vscode\\stop-tomcat.bat"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "update-tomcat-paths",
+            "command": "cmd",
+            "args": ["/c", "${workspaceFolder}\\.vscode\\update-tomcat-paths.bat"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "hot-redeploy",
+            "dependsOn": ["deploy-war"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}
